@@ -8,31 +8,31 @@ import { useAuth } from '../../hooks/useAuth';
 import { api } from '../../services/api';
 
 import {
-  Container, 
-  Header, 
-  UserInfo, 
-  Avatar, 
+  Container,
+  Header,
+  UserInfo,
+  Avatar,
   UserInfoText,
-  SignOutButton, 
-  UserFollowedStreams, 
-  UserFollowedStreamsTitle, 
-  TopGames, 
+  SignOutButton,
+  UserFollowedStreams,
+  UserFollowedStreamsTitle,
+  TopGames,
   TopGamesTitle
 } from './styles';
 import { UserFollowedStreamCard } from '../../components/UserFollowedStreamCard';
 
 interface TopGames {
-  box_art_url: string, 
-  id: string, 
+  box_art_url: string,
+  id: string,
   name: string
 }
 
 interface UserFollowedStreams {
   id: string;
-  thumbnail_url: string, 
+  thumbnail_url: string,
   title: string,
-  user_id: string, 
-  user_login: string, 
+  user_id: string,
+  user_login: string,
   user_name: string,
   viewer_count: number
 }
@@ -46,7 +46,7 @@ export function Home() {
   const [userFollowedStreams, setUserFollowedStreams] = useState<UserFollowedStreamsFormatted[]>([]);
   const [isLoadingUserFollowedStreams, setIsLoadingUserFollowedStreams] = useState(true);
   const [isLoadingTopGames, setIsLoadingTopGames] = useState(true);
-  
+
   const theme = useTheme();
   const { signOut, user, isLoggingOut } = useAuth();
 
@@ -83,7 +83,7 @@ export function Home() {
       const response = await api.get<{ data: UserFollowedStreams[] }>(`/streams/followed?user_id=${user.id}`);
 
       const formattedResponse = await getUserFollowedStreamsAvatar(response.data.data);
-      
+
       if (formattedResponse) {
         setUserFollowedStreams(formattedResponse);
         setIsLoadingUserFollowedStreams(false);
@@ -131,7 +131,7 @@ export function Home() {
       <UserFollowedStreams>
         <UserFollowedStreamsTitle>Canais que você segue</UserFollowedStreamsTitle>
 
-        <FlatList 
+        <FlatList
           data={!isLoadingUserFollowedStreams ? userFollowedStreams : [{ id: '1' } as UserFollowedStreamsFormatted, { id: '2' } as UserFollowedStreamsFormatted]}
           keyExtractor={item => item.id}
           horizontal
@@ -146,7 +146,7 @@ export function Home() {
             paddingRight: 12
           }}
           renderItem={({ item }) => (
-            <UserFollowedStreamCard 
+            <UserFollowedStreamCard
               avatarUrl={item.user_avatar_url}
               streamer_login={item.user_login}
               streamer_name={item.user_name}
@@ -162,7 +162,7 @@ export function Home() {
       <TopGames>
         <TopGamesTitle>Mais assistidos do momento</TopGamesTitle>
 
-        <FlatList 
+        <FlatList
           data={!isLoadingTopGames ? topGames : [{ id: '1' } as TopGames, { id: '2' } as TopGames, { id: '3' } as TopGames]}
           keyExtractor={item => item.id}
           horizontal
@@ -187,7 +187,7 @@ export function Home() {
         />
       </TopGames>
 
-      <Modal 
+      <Modal
         animationType="fade"
         visible={isLoggingOut}
         statusBarTranslucent
